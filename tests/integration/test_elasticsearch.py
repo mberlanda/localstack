@@ -1,6 +1,7 @@
 import json
 import time
 from botocore.exceptions import ClientError
+import traceback
 from nose.tools import assert_raises, assert_equal, assert_true, assert_false
 from localstack.utils.aws import aws_stack
 from localstack.utils.common import safe_requests as requests
@@ -73,8 +74,12 @@ def test_domain_creation():
     assert_true(status['DomainStatus']['EBSOptions']['EBSEnabled'])
 
     # make sure we can fake adding tags to a domain
-    response = es_client.add_tags(ARN='string', TagList=[{'Key': 'SOME_TAG', 'Value': 'SOME_VALUE'}])
-    assert_equal(200, response['ResponseMetadata']['HTTPStatusCode'])
+    try:
+        response = es_client.add_tags(ARN='string', TagList=[{'Key': 'SOME_TAG', 'Value': 'SOME_VALUE'}])
+        assert_equal(200, response['ResponseMetadata']['HTTPStatusCode'])
+    except ClientError as e:
+        print(str(e))
+        print(traceback.format_exc())
 
     # make sure domain deletion works
     es_client.delete_elasticsearch_domain(DomainName=TEST_DOMAIN_NAME)
