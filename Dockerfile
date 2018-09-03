@@ -1,6 +1,6 @@
-FROM localstack/java-maven-node-python
+FROM mberlanda/java-maven-node-python-custom
 
-MAINTAINER Waldemar Hummer (waldemar.hummer@gmail.com)
+MAINTAINER Mauro Berlanda (mauro.berlanda@gmail.com)
 LABEL authors="Waldemar Hummer (waldemar.hummer@gmail.com), Gianluca Bortoli (giallogiallo93@gmail.com)"
 
 # add files required to run "make install"
